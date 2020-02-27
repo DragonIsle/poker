@@ -1,4 +1,4 @@
-import functions.CardParser
+import utils.{CardParser, HandComparator}
 import models.Card
 
 import scala.util.Try
@@ -29,6 +29,10 @@ object Main extends App {
 
   val zippedHands = hands.map(_.zip(input.tail))
 
+  val sortedZippedHands = zippedHands.map(_.sortWith(
+    (hand1, hand2) => HandComparator.compareHands(table.getOrElse(List.empty), hand1._1, hand2._1) > 0))
+
+  // todo: sort zipped hands
   val result = zippedHands match {
     case Right(cardHands) => cardHands.map {
       case (_, initStr) => initStr
