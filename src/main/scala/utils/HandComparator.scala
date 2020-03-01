@@ -1,25 +1,16 @@
 package utils
 
-import models.Card
+import models.Models.{Card, Hand}
 
 object HandComparator {
 
-  def compareHands(table: List[Card], hand1: List[Card], hand2: List[Card]): Int = {
-    assert(hand1.length == hand2.length)
-    val hand1SortedCombos = getSortedCombosList(table ++ hand1)
-    val hand2SortedCombos = getSortedCombosList(table ++ hand2)
-    compareSortedComboLists(hand1SortedCombos, hand2SortedCombos)
-  }
+  def compareHands(table: List[Card], hand1: Hand, hand2: Hand): Int =
+    compareCombos(getBestCombo(table, hand1), getBestCombo(table, hand2))
 
-  private def getSortedCombosList(cardList: List[Card]): List[List[Card]] =
-    cardList.toSet.subsets(5).toList.map(_.toList).sortWith(compareCombos(_, _) > 0)
+  private def getBestCombo(table: List[Card], hand: Hand): List[Card] =
+    (table :+ hand.card1 :+ hand.card2).toSet.subsets(5).toList.map(_.toList)
+      .sortWith(compareCombos(_, _) > 0).head
 
-  // todo: implement combination comparation
-  private def compareCombos(combo1: List[Card], combo2: List[Card]): Int = ???
-
-  @scala.annotation.tailrec
-  private def compareSortedComboLists(comboList1: List[List[Card]], comboList2: List[List[Card]]): Int = {
-    val headCompResult = compareCombos(comboList1.head, comboList2.head)
-    if (headCompResult != 0) headCompResult else compareSortedComboLists(comboList1.tail, comboList2.tail)
-  }
+  // todo: implement
+  private def compareCombos(combo1: List[Card], combo2: List[Card]): Int = 0
 }
