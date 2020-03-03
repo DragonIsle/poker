@@ -1,6 +1,7 @@
 package utils
 
-import models.Models.{Card, Hand}
+import models.Card
+import models.Card.Hand
 
 import scala.util.Try
 

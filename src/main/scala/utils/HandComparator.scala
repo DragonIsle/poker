@@ -1,6 +1,7 @@
 package utils
 
-import models.Models.{Card, Hand}
+import models.Card.Hand
+import models.{Card, Combos}
 
 object HandComparator {
 
@@ -11,6 +12,12 @@ object HandComparator {
     (table :+ hand.card1 :+ hand.card2).toSet.subsets(5).toList.map(_.toList)
       .sortWith(compareCombos(_, _) > 0).head
 
-  // todo: implement
-  private def compareCombos(combo1: List[Card], combo2: List[Card]): Int = 0
+  private def compareCombos(cards1: List[Card], cards2: List[Card]): Int = {
+    val maxCombo1 = Combos.combinationList.filter(dk => dk.checkCards(cards1)).max
+    val maxCombo2 = Combos.combinationList.filter(dk => dk.checkCards(cards2)).max
+    if (maxCombo1.compareTo(maxCombo2) == 0)
+      maxCombo1.kick(cards1, cards2)
+    else
+      maxCombo1.compareTo(maxCombo2)
+  }
 }
