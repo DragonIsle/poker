@@ -6,18 +6,14 @@ import models.{Card, Combos}
 object HandComparator {
 
   def compareHands(table: List[Card], hand1: Hand, hand2: Hand): Int =
-    compareCombos(getBestCombo(table, hand1), getBestCombo(table, hand2))
+    compareCardLists(table :+ hand1.card1 :+ hand1.card2, table :+ hand2.card1 :+ hand2.card2)
 
-  private def getBestCombo(table: List[Card], hand: Hand): List[Card] =
-    (table :+ hand.card1 :+ hand.card2).toSet.subsets(5).toList.map(_.toList)
-      .sortWith(compareCombos(_, _) > 0).head
-
-  private def compareCombos(cards1: List[Card], cards2: List[Card]): Int = {
-    val maxCombo1 = Combos.combinationList.filter(dk => dk.checkCards(cards1)).max
-    val maxCombo2 = Combos.combinationList.filter(dk => dk.checkCards(cards2)).max
-    if (maxCombo1.compareTo(maxCombo2) == 0)
+  private def compareCardLists(cards1: List[Card], cards2: List[Card]): Int = {
+    val maxCombo1 = Combos.combinationList.findLast(dk => dk.checkCards(cards1)).getOrElse(Combos.combinationList.head)
+    val maxCombo2 = Combos.combinationList.findLast(dk => dk.checkCards(cards2)).getOrElse(Combos.combinationList.head)
+    val compareResult = maxCombo1.compareTo(maxCombo2)
+    if (compareResult == 0)
       maxCombo1.kick(cards1, cards2)
-    else
-      maxCombo1.compareTo(maxCombo2)
+    else compareResult
   }
 }
