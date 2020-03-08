@@ -1,4 +1,4 @@
-#Texas holdem poker
+# Texas holdem poker
 
 This program is command line app that sort texas holdem poker hands, from weakest to strongest one.
 
@@ -19,7 +19,7 @@ Output will be looks like
 where each hand is one of the previously passed in input, but output sorted by power.
 If hands are equal in power, they will be presented in output with '=' sign between them
 
-##Executing
+## Executing
 To run this app, you need to have installed scala(default version 2.13.1) and sbt (default version 1.3.8). 
 You can try to change versions of scala and sbt to oldest ones, 
 but make sure that it will not break compilation, building etc.
@@ -31,7 +31,7 @@ sbt run
 from project directory
 
 
-##Tests
+## Tests
 There are also test for many different cases of possible table + hands combinations.
 To run it, just execute
 ```
